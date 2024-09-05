@@ -5,10 +5,10 @@ import { User_Type } from "./user.interface";
 
 
 const User_Schema = new Schema<User_Type>({
-    user: {
-        type: Schema.Types.ObjectId,
-        required: [true, "user ref is required *"]
-    },
+    // user: {
+    //     type: Schema.Types.ObjectId,
+    //     required: [true, "user ref is required *"]
+    // },
     email: {
         type: String,
         unique: true,

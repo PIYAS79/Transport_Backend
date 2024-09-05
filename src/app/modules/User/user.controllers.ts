@@ -4,16 +4,26 @@ import httpStatus from "http-status";
 import { User_Services } from "./user.services";
 
 
+// create student controller 
+const Create_Student_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
 
-const Create_User_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
-
-
-    const result = await User_Services.Create_User_Service(req.body);
-
+    const result = await User_Services.Create_Student_Service(req.body);
 
     res.status(httpStatus.OK).json({
         success: true,
-        message: "Successfully Create User !",
+        message: "Successfully Create A Student !",
+        data: result
+    })
+})
+
+// create faculty controller
+const Create_Faculty_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
+
+    const result = await User_Services.Create_Faculty_Service(req.body);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully Create A Faculty !",
         data: result
     })
 })
@@ -21,5 +31,6 @@ const Create_User_Controller = Async_Catch(async (req: Request, res: Response, n
 
 
 export const User_Controllers = {
-    Create_User_Controller,
+    Create_Student_Controller,
+    Create_Faculty_Controller
 }

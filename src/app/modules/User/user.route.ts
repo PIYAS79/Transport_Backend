@@ -4,13 +4,16 @@
 import express from 'express';
 import { User_Controllers } from './user.controllers';
 import Zod_Validation_Request from '../../middlewares/validation.request';
-import { Zod_User_Type } from './user.zod.validation.type';
+import { Zod_Student_Type } from '../Student/zod.student.type';
+import { Zod_Faculty_Type } from '../Faculty/zod.faculty.type';
 
 
 const router = express.Router();
 
-// create user route
-router.post('/', Zod_Validation_Request(Zod_User_Type), User_Controllers.Create_User_Controller)
+// create student route
+router.post('/student', Zod_Validation_Request(Zod_Student_Type), User_Controllers.Create_Student_Controller)
+// create faculty route
+router.post('/faculty', Zod_Validation_Request(Zod_Faculty_Type), User_Controllers.Create_Faculty_Controller)
 
 
 
