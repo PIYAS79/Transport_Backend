@@ -12,6 +12,8 @@ export type User_Type = {
 
 
 
+// custom static methods
 export interface User_Custom_Static_Method extends Model<User_Type>{
-    isTokenValid(tokenIAt:number,PassUpAt:Date):boolean
+    isTokenValid(tokenIAt:number,PassUpAt:Date):boolean,
+    isUserExist(email: string): Promise<User_Type>,
 }

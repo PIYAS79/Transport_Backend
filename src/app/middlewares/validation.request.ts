@@ -6,7 +6,7 @@ const Zod_Validation_Request=(schema:AnyZodObject)=>{
         try{
             await schema.parseAsync({
                 body : req.body,
-                cookie : req.cookies
+                cookies : req.cookies
             })
             next();
         }catch(err){

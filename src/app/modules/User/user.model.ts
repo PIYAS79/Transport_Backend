@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { User_Custom_Static_Method, User_Type } from "./user.interface";
+import { encodeDatabyBcrypt } from "../../utils/bcrypt";
 
 
 
@@ -12,7 +13,7 @@ const User_Schema = new Schema<User_Type, User_Custom_Static_Method>({
     email: {
         type: String,
         unique: true,
-        required: [true, "Email is required *"]
+        required: [true, "Email is required from model &&&&&&&&& *"]
     },
     isPasswordChanged: {
         type: Boolean,
@@ -49,11 +50,27 @@ const User_Schema = new Schema<User_Type, User_Custom_Static_Method>({
     }
 })
 
-
+// check token timing
 User_Schema.statics.isTokenValid = function (tokenIAt: number, PassUpAt: Date) {
     const PassUpdatedAt = new Date(PassUpAt).getTime() / 1000;
     return PassUpdatedAt > tokenIAt;
 }
+// check if the user is exist or not by static method
+User_Schema.statics.isUserExist = async function (email: string) {
+    return await User_Model.findOne({ email: email }).select('+password');
+}
+
+// hide password by bcrypt
+User_Schema.pre('save', async function (next) {
+    const newUser = this;
+    newUser.password = await encodeDatabyBcrypt(this.password);
+    next();
+})
+// hide password after query
+User_Schema.post('save', async function (doc, next) {
+    doc.password = '';
+    next();
+})
 
 
 
