@@ -8,15 +8,13 @@ export type Faculty_Type = {
     name: User_Name_Type,
     email: string,
     facultyId: string,
-    department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG'
+    department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG' 
 }
 
 
 export type Get_Faculty_Type = {
     name: User_Name_Type,
     email: string,
-    role: 'SUPER' | 'ADMIN' | 'STUDENT' | 'FACULTY',
-    status: 'ACTIVE' | 'BLOCK' | 'EXPIRED',
     facultyId: string,
-    department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG'
+    department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG' 
 }

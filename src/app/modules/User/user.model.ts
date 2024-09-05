@@ -1,10 +1,10 @@
 import { model, Schema } from "mongoose";
-import { User_Type } from "./user.interface";
+import { User_Custom_Static_Method, User_Type } from "./user.interface";
 
 
 
 
-const User_Schema = new Schema<User_Type>({
+const User_Schema = new Schema<User_Type, User_Custom_Static_Method>({
     // user: {
     //     type: Schema.Types.ObjectId,
     //     required: [true, "user ref is required *"]
@@ -39,6 +39,7 @@ const User_Schema = new Schema<User_Type>({
             values: ['ACTIVE', 'BLOCK', 'EXPIRED'],
             message: `{VALUE} is not assignable with provided types *`
         },
+        default: "ACTIVE",
         required: [true, "Status is required *"]
     },
 }, {
@@ -49,6 +50,11 @@ const User_Schema = new Schema<User_Type>({
 })
 
 
+User_Schema.statics.isTokenValid = function (tokenIAt: number, PassUpAt: Date) {
+    const PassUpdatedAt = new Date(PassUpAt).getTime() / 1000;
+    return PassUpdatedAt > tokenIAt;
+}
 
 
-export const User_Model = model<User_Type>('User', User_Schema);
+
+export const User_Model = model<User_Type, User_Custom_Static_Method>('User', User_Schema);

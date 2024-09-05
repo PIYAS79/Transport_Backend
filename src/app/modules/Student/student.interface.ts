@@ -8,15 +8,13 @@ export type Student_Type = {
     name: User_Name_Type,
     email: string,
     studentId: string,
-    department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG'
+    department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG' 
 }
 
 
 export type Get_Student_Type = {
     name: User_Name_Type,
     email: string,
-    role: 'SUPER' | 'ADMIN' | 'STUDENT' | 'FACULTY',
-    status: 'ACTIVE' | 'BLOCK' | 'EXPIRED',
     studentId: string,
-    department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG'
+    department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG' 
 }

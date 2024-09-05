@@ -8,8 +8,6 @@ export const Zod_Student_Type = z.object({
       l_name: z.string(),
     }),
     email: z.string().email(),
-    role: z.enum(["SUPER", "ADMIN", "STUDENT", "FACULTY"]),
-    status: z.enum(["ACTIVE", "BLOCK", "EXPIRED"]),
     studentId: z.string(),
     department: z.enum(["CSE", "SWE", "BBA", "MCT", "CIS", "ENG"]),
   }),

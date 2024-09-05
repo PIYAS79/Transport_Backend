@@ -1,3 +1,4 @@
+import { Model } from "mongoose"
 
 
 export type User_Type = {
@@ -7,4 +8,10 @@ export type User_Type = {
     isPasswordChanged: boolean,
     status: 'ACTIVE' | 'BLOCK' | 'EXPIRED',
     passwordChangedAt?: Date,
+}
+
+
+
+export interface User_Custom_Static_Method extends Model<User_Type>{
+    isTokenValid(tokenIAt:number,PassUpAt:Date):boolean
 }

@@ -28,9 +28,21 @@ const Create_Faculty_Controller = Async_Catch(async (req: Request, res: Response
     })
 })
 
+// create faculty controller
+const Create_Admin_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
+
+    const result = await User_Services.Create_Admin_Service(req.body);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully Create A Admin !",
+        data: result
+    })
+})
 
 
 export const User_Controllers = {
     Create_Student_Controller,
-    Create_Faculty_Controller
+    Create_Faculty_Controller,
+    Create_Admin_Controller
 }
