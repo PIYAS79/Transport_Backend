@@ -36,10 +36,14 @@ const Semester_Schema: Schema = new Schema<Semester_Type>({
         type: Number,
         required: [true, "Semester end month is required *"]
     },
+    semester_color: {
+        type: String,
+        required: [true, "Semester Color Code is requried *"]
+    },
     status: {
         type: String,
         enum: {
-            values: ["PENDING", "ACTIVE", "EXPIRED","DELETED"],
+            values: ["PENDING", "ACTIVE", "EXPIRED", "DELETED"],
             message: '{VALUE} is not assignable on given types'
         },
         default: "PENDING",

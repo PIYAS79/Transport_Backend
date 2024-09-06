@@ -11,8 +11,9 @@ export type Semester_Type = {
     created_by: Types.ObjectId; // user collection _id
     startMonth: number, // jan-1,feb-2,...dec-12
     endMonth: number, // jan-1,feb-2,...dec-12
-    status: "PENDING" | "ACTIVE" | "EXPIRED"|"DELETED",
+    status: "PENDING" | "ACTIVE" | "EXPIRED" | "DELETED",
     isDeleted?: boolean,
+    semester_color: string,
     deletedBy?: Types.ObjectId, // user collection _id
 };
 
@@ -21,5 +22,6 @@ export type Semester_Update_Type = {
     semester_name?: string;
     package_price?: number;
     one_way_pass_price?: number;
-    status?: "PENDING" | "ACTIVE" | "EXPIRED";
+    status?: "PENDING" | "ACTIVE" | "EXPIRED",
+    semester_color: string,
 };

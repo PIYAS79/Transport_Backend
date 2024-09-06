@@ -49,7 +49,7 @@ const Create_Semester_Service = async (data: Semester_Type) => {
 
 // update semester service
 // *you cant chnage semester_name after activate the semester
-// * you can update only 4 field (semester_name, package_price, one_way_pass_price, and status)
+// * you can update only 5 field (semester_name, package_price, one_way_pass_price, status & semester_color)
 const Semester_Update_Service = async (data: Semester_Update_Type, semesterId: string, tokendata: JwtPayload) => {
     // Find the admin user by token email
     const admin = await User_Model.findOne({ email: tokendata.email });
@@ -81,7 +81,7 @@ const Semester_Update_Service = async (data: Semester_Update_Type, semesterId: s
 
 
     // you can update only 4 property 
-    if (data.one_way_pass_price || data.package_price || data.semester_name || data.status) {
+    if (data.one_way_pass_price || data.package_price || data.semester_name || data.status || data.semester_color) {
         // if all ok then update semester 
         const remainingProperties: Semester_Update_Type = {
             ...data
