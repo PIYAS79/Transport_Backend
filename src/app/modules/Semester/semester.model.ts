@@ -2,7 +2,7 @@ import mongoose, { model, Schema } from "mongoose";
 import { Semester_Type } from "./semester.interface";
 
 
-const Semester_Schema: Schema = new Schema<Semester_Type>({
+const Semester_Schema = new Schema<Semester_Type>({
     semester_code: {
         type: Number,
         required: [true, "Semester code is required *"]
@@ -61,5 +61,10 @@ const Semester_Schema: Schema = new Schema<Semester_Type>({
         virtuals: true
     }
 });
+
+
+
+
+
 
 export const Semester_Model = model<Semester_Type>('Semester', Semester_Schema);

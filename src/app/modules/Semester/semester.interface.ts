@@ -1,4 +1,4 @@
-import { Types } from "mongoose"
+import { Model, Types } from "mongoose"
 
 
 
