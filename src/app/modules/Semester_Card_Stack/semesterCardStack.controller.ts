@@ -39,7 +39,16 @@ const Withdraw_Confirm_By_Admin_Controller = Async_Catch(async (req: Request, re
     })
 })
 
+// card request approve by admin controller 
+const Card_Request_Approved_By_Admin_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
+    const result = await Semester_Card_Stack_Services.Card_Request_Approved_By_Admin_Service(req.params.rid,req.user);
 
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully Card Request Confirmed By Admin !",
+        data: result
+    })
+})
 
 
 
@@ -48,5 +57,6 @@ const Withdraw_Confirm_By_Admin_Controller = Async_Catch(async (req: Request, re
 export const Semester_Card_Stack_Controller = {
     Card_Request_Controller,
     Request_Withdraw_By_User_Controller,
-    Withdraw_Confirm_By_Admin_Controller
+    Withdraw_Confirm_By_Admin_Controller,
+    Card_Request_Approved_By_Admin_Controller
 }

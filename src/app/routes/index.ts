@@ -5,6 +5,7 @@ import { User_Routes } from '../modules/User/user.route';
 import { Auth_Routes } from '../modules/Auth/auth.route';
 import { Semester_Router } from '../modules/Semester/semester.route';
 import { Semester_Card_Stack_Routes } from '../modules/Semester_Card_Stack/semesterCardStack.route';
+import { Card_Router } from '../modules/Card/card.route';
 
 
 const router = express.Router();
@@ -26,6 +27,10 @@ const projectRoutes = [
         path: '/semester/card',
         route: Semester_Card_Stack_Routes,
     },
+    {
+        path: '/card',
+        route: Card_Router
+    }
 ]
 
 

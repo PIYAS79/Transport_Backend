@@ -20,3 +20,8 @@ export const Zod_SemesterCardStack_User_Withdraw_Type = z.object({
         status:z.boolean()
     })
 });
+// export const Zod_Req_Approve_Type = z.object({
+//     body: z.object({
+//         type:z.number().max(2).min(1), // 1=semester passout; 2=one way pass out
+//     })
+// });

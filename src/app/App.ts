@@ -4,13 +4,17 @@ import Global_Error_Handler from './errors/global.error.handler';
 import Route_Not_Found from './errors/rotue.notFound';
 import router from './routes';
 import cookieParser from 'cookie-parser';
+import updateCardStatus from './modules/Card/card.cron';
+import UpdateSemesterStatus from './modules/Semester/semester.cron';
 
 const app = express();
+
 // default middleares 
 app.use(express.json())
 app.use(cookieParser());
 app.use(cors())
-
+updateCardStatus();
+UpdateSemesterStatus();
 
 // initial route
 app.get('/', (req: Request, res: Response) => {
