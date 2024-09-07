@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 
 
 
-// create student controller 
+// create semester controller 
 const Create_Semester_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
 
     const result = await Semester_Services.Create_Semester_Service(req.body);
@@ -17,7 +17,7 @@ const Create_Semester_Controller = Async_Catch(async (req: Request, res: Respons
     })
 })
 
-// update student controller 
+// update semester controller 
 const Semester_Update_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
 
     const semesterId = req.params.sid;
@@ -31,7 +31,7 @@ const Semester_Update_Controller = Async_Catch(async (req: Request, res: Respons
     })
 })
 
-// delete student controller 
+// delete semester controller 
 const Semester_Delete_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
 
     const semesterId = req.params.sid;
@@ -45,10 +45,36 @@ const Semester_Delete_Controller = Async_Catch(async (req: Request, res: Respons
     })
 })
 
+// get all semester controller
+const Get_All_Semester_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
+
+    const result = await Semester_Services.Get_All_Semester_Service(req.query);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully Get all semester !",
+        data: result
+    })
+})
+
+// get one semester controller
+const Get_One_Semester_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
+
+    const result = await Semester_Services.Get_One_Semester_Service(req.params.sem_id);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully Get one semester !",
+        data: result
+    })
+})
+
 
 
 export const Semester_Controller = {
     Create_Semester_Controller,
     Semester_Update_Controller,
-    Semester_Delete_Controller
+    Semester_Delete_Controller,
+    Get_All_Semester_Controller,
+    Get_One_Semester_Controller
 }

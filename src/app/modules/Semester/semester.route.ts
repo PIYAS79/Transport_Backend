@@ -17,6 +17,12 @@ router.patch('/:sid',Token_Verify("ADMIN","SUPER"),Zod_Validation_Request(Zod_Se
 // delete semester route 
 router.delete('/:sid',Token_Verify("ADMIN","SUPER"),Semester_Controller.Semester_Delete_Controller)
 
+// get all semester route
+router.get('/',Semester_Controller.Get_All_Semester_Controller);
+// get all semester route
+router.get('/:sem_id',Semester_Controller.Get_One_Semester_Controller);
+
+// get one semester route
 
 
 

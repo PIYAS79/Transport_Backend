@@ -5,6 +5,7 @@ import { Semester_Type, Semester_Update_Type } from "./semester.interface"
 import { Semester_Model } from "./semester.model";
 import { generateSemesterCode, isOverlappingSemester } from "./semester.utils";
 import { JwtPayload } from "jsonwebtoken";
+import Query_Builder from "../../class/Query.builder";
 
 // create semester sevice
 const Create_Semester_Service = async (data: Semester_Type) => {
@@ -125,8 +126,37 @@ const Semester_Delete_Service = async (semesterId: string, tokendata: JwtPayload
 }
 
 
+// get all semester services 
+const Get_All_Semester_Service = async (query: Record<string, unknown>) => {
+
+    const partialTags = ['semester_year', 'package_price', 'one_way_pass_price','startMonth','endMonth','status','semester_color'];
+    const semesterInstance = new Query_Builder(Semester_Model.find().populate('created_by'), query)
+        .searchQuery(partialTags)
+        .fieldQuery()
+        .filterQuery()
+        .sortQuery()
+        .pageQuery()
+
+    const result = await semesterInstance.modelQuery;
+    const meta = await semesterInstance.countTotalMeta();
+    return { result, meta }
+}
+
+// get one semester services 
+const Get_One_Semester_Service = async (semesterId:string) => {
+
+    const semester = await Semester_Model.findById({_id:semesterId}).populate('created_by');
+    if(!semester){
+        throw new Final_App_Error(httpStatus.NOT_FOUND,"Semester not found *")
+    }
+    return semester;
+}
+
+
 export const Semester_Services = {
     Create_Semester_Service,
     Semester_Update_Service,
-    Semester_Delete_Service
+    Semester_Delete_Service,
+    Get_All_Semester_Service,
+    Get_One_Semester_Service
 }
