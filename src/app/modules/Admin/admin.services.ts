@@ -4,6 +4,7 @@ import Final_App_Error from "../../class/Final.app.error";
 import httpStatus from "http-status";
 import { Admin_Model } from "./admin.model";
 import Query_Builder from "../../class/Query.builder";
+import { Update_Admin_Type } from "./admin.interface";
 
 
 // get all admin services 
@@ -42,50 +43,113 @@ const Get_All_Admin_Service = async (userId: string, tokenData: JwtPayload, quer
 // get one admin service 
 const Get_One_Admin_Service = async (a_email: string, tokenData: JwtPayload) => {
 
-    const admin = await Admin_Model.findOne({email:a_email}).populate('user');
-    if(!admin){
-        throw new Final_App_Error(httpStatus.NOT_FOUND,"Admin is not found *");
+    const admin = await Admin_Model.findOne({ email: a_email }).populate('user');
+    if (!admin) {
+        throw new Final_App_Error(httpStatus.NOT_FOUND, "Admin is not found *");
     }
-    if(tokenData.role==="SUPER"){
+    if (tokenData.role === "SUPER") {
         // find the user throw token email for ensuring that this is an admin
-        const user = await User_Model.findOne({email:tokenData.email});
-        if(!user){
-            throw new Final_App_Error(httpStatus.NOT_FOUND,"User not found *");
+        const user = await User_Model.findOne({ email: tokenData.email });
+        if (!user) {
+            throw new Final_App_Error(httpStatus.NOT_FOUND, "User not found *");
         }
         // check the role again 
-        if(user.role!== tokenData.role){
-            throw new Final_App_Error(httpStatus.UNAUTHORIZED,"Token role is not matched *")
+        if (user.role !== tokenData.role) {
+            throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Token role is not matched *")
         }
         return admin;
-    }else{
-        if(tokenData.role === "ADMIN"){
+    } else {
+        if (tokenData.role === "ADMIN") {
             // check the email with the token
-            if(tokenData.email !== admin.email){
-                throw new Final_App_Error(httpStatus.UNAUTHORIZED,"Token is not matched with the data *")
+            if (tokenData.email !== admin.email) {
+                throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Token is not matched with the data *")
             }
             // find the user 
-            const userByAdmin = await User_Model.findOne({email:a_email});
-            if(!userByAdmin){
-                throw new Final_App_Error(httpStatus.NOT_FOUND,"User is not found *");
+            const userByAdmin = await User_Model.findOne({ email: a_email });
+            if (!userByAdmin) {
+                throw new Final_App_Error(httpStatus.NOT_FOUND, "User is not found *");
             }
             // check the user status
-            if(userByAdmin.status ==="BLOCK"){
-                throw new Final_App_Error(httpStatus.FORBIDDEN,"Your account is blocked by the authority *")
+            if (userByAdmin.status === "BLOCK") {
+                throw new Final_App_Error(httpStatus.FORBIDDEN, "Your account is blocked by the authority *")
             }
-            if(userByAdmin.status ==="EXPIRED"){
-                throw new Final_App_Error(httpStatus.FORBIDDEN,"Your account is expired by the authority *")
+            if (userByAdmin.status === "EXPIRED") {
+                throw new Final_App_Error(httpStatus.FORBIDDEN, "Your account is expired by the authority *")
             }
             return admin;
-        }else{
+        } else {
             // you are an faculty or token is not valid 
-            throw new Final_App_Error(httpStatus.UNAUTHORIZED,"Your token is not matched with the data *")
+            throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Your token is not matched with the data *")
+        }
+    }
+}
+
+// update admin service 
+const Udpate_Admin_Service = async (data: Update_Admin_Type, tokenData: JwtPayload, a_email: string) => {
+
+    const admin = await Admin_Model.findOne({ email: a_email })
+    if (!admin) {
+        throw new Final_App_Error(httpStatus.NOT_FOUND, "Admin is not found *");
+    }
+    if (tokenData.role === "SUPER") {
+        // find the user throw token email for ensuring that this is an super admin
+        const user = await User_Model.findOne({ email: tokenData.email });
+        if (!user) {
+            throw new Final_App_Error(httpStatus.NOT_FOUND, "User not found *");
+        }
+        // check the role again 
+        if (user.role !== tokenData.role) {
+            throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Token role is not matched *")
+        }
+
+        // if all ok then update the student
+        const result = await Admin_Model.findByIdAndUpdate({ _id: admin._id }, {
+            name: {
+                f_name: data.name?.f_name ? data.name.f_name : admin.name.f_name,
+                m_name: data.name?.m_name ? data.name.m_name : admin.name.m_name,
+                l_name: data.name?.l_name ? data.name.l_name : admin.name.l_name,
+            },
+            adminId: data.adminId ? data.adminId : admin.adminId,
+        }, { new: true });
+        return result;
+    } else {
+        if (tokenData.role === "ADMIN") {
+            // check the email with the token
+            if (tokenData.email !== admin.email) {
+                throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Token is not matched with the data *")
+            }
+            // find the user 
+            const userByAdmin = await User_Model.findOne({ email: a_email });
+            if (!userByAdmin) {
+                throw new Final_App_Error(httpStatus.NOT_FOUND, "User is not found *");
+            }
+            // check the user status
+            if (userByAdmin.status === "BLOCK") {
+                throw new Final_App_Error(httpStatus.FORBIDDEN, "Your account is blocked by the authority *")
+            }
+            if (userByAdmin.status === "EXPIRED") {
+                throw new Final_App_Error(httpStatus.FORBIDDEN, "Your account is expired by the authority *")
+            }
+            // if all ok then update the data 
+            const result = await Admin_Model.findByIdAndUpdate({ _id: admin._id }, {
+                name: {
+                    f_name: data.name?.f_name ? data.name.f_name : admin.name.f_name,
+                    m_name: data.name?.m_name ? data.name.m_name : admin.name.m_name,
+                    l_name: data.name?.l_name ? data.name.l_name : admin.name.l_name,
+                },
+                adminId: data.adminId ? data.adminId : admin.adminId,
+            }, { new: true });
+            return result;
+        } else {
+            // you are an faculty or token is not valid 
+            throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Your token is not matched with the data *")
         }
     }
 }
 
 
-
 export const Admin_Services = {
     Get_All_Admin_Service,
+    Udpate_Admin_Service,
     Get_One_Admin_Service
 }

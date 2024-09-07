@@ -34,12 +34,22 @@ const Get_One_Faculty_Controller = Async_Catch(async (req: Request, res: Respons
     })
 })
 
+// update faculty data controller
+const Udpate_Faculty_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
 
+    const result = await Faculty_Services.Udpate_Faculty_Service(req.body,req.user,req.params.f_email);
 
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully update one faculty !",
+        data: result
+    })
+})
 
 
 
 export const Faculty_Controller = {
     Get_All_Faculty_Controller,
-    Get_One_Faculty_Controller
+    Get_One_Faculty_Controller,
+    Udpate_Faculty_Controller
 }

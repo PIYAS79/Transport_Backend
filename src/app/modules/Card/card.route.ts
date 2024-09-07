@@ -21,4 +21,7 @@ router.post('/onepass',Token_Verify("ADMIN","FACULTY","SUPER","STUDENT"),Zod_Val
 // get a user all cards route
 router.get('/:uid',Token_Verify("ADMIN","FACULTY","SUPER","STUDENT"),Card_Controller.Get_A_User_All_Cards)
 
+// get all card route
+router.get('/:uid',Token_Verify("ADMIN","SUPER"),Card_Controller.Get_All_Cards_Controller)
+
 export const Card_Router = router;

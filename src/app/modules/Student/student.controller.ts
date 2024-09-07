@@ -31,7 +31,23 @@ const Get_One_Student_Controller = Async_Catch(async (req: Request, res: Respons
     })
 })
 
+// update student data controller
+const Udpate_Student_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
+
+    const result = await Student_Services.Udpate_Student_Service(req.body,req.user,req.params.s_email);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully update one student !",
+        data: result
+    })
+})
+
+
+
+
 export const Student_Controller = {
     Get_All_Student_Controller,
-    Get_One_Student_Controller
+    Get_One_Student_Controller,
+    Udpate_Student_Controller
 }

@@ -18,3 +18,10 @@ export type Get_Faculty_Type = {
     facultyId: string,
     department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG' 
 }
+
+
+export type Update_Faculty_Type = {
+    name?: User_Name_Type,
+    facultyId?: string,
+    department?: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG' 
+}

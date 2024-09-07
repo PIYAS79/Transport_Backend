@@ -16,3 +16,8 @@ export type Get_Admin_Type = {
     email: string,
     adminId: string,
 }
+
+export type Update_Admin_Type = {
+    name?: User_Name_Type,
+    adminId?: string,
+}

@@ -4,6 +4,7 @@ import Final_App_Error from "../../class/Final.app.error";
 import httpStatus from "http-status";
 import Query_Builder from "../../class/Query.builder";
 import { Faculty_Model } from "./faculty.model";
+import { Update_Faculty_Type } from "./faculty.interface";
 
 
 
@@ -84,9 +85,74 @@ const Get_One_Faculty_Service = async (f_email: string, tokenData: JwtPayload) =
     }
 }
 
+// update faculty service 
+const Udpate_Faculty_Service = async (data: Update_Faculty_Type, tokenData: JwtPayload, f_email: string) => {
+
+    const faculty = await Faculty_Model.findOne({ email: f_email })
+    if (!faculty) {
+        throw new Final_App_Error(httpStatus.NOT_FOUND, "Faculty is not found *");
+    }
+    if (tokenData.role === "ADMIN" || tokenData.role === "SUPER") {
+        // find the user throw token email for ensuring that this is an admin
+        const user = await User_Model.findOne({ email: tokenData.email });
+        if (!user) {
+            throw new Final_App_Error(httpStatus.NOT_FOUND, "User not found *");
+        }
+        // check the role again 
+        if (user.role !== tokenData.role) {
+            throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Token role is not matched *")
+        }
+
+        // if all ok then update the student
+        const result = await Faculty_Model.findByIdAndUpdate({ _id: faculty._id }, {
+            name: {
+                f_name: data.name?.f_name ? data.name.f_name : faculty.name.f_name,
+                m_name: data.name?.m_name ? data.name.m_name : faculty.name.m_name,
+                l_name: data.name?.l_name ? data.name.l_name : faculty.name.l_name,
+            },
+            facultyId: data.facultyId ? data.facultyId : faculty.facultyId,
+            department: data.department ? data.department : faculty.department
+        }, { new: true });
+        return result;
+    } else {
+        if (tokenData.role === "FACULTY") {
+            // check the email with the token
+            if (tokenData.email !== faculty.email) {
+                throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Token is not matched with the data *")
+            }
+            // find the user 
+            const userByFaculty = await User_Model.findOne({ email: f_email });
+            if (!userByFaculty) {
+                throw new Final_App_Error(httpStatus.NOT_FOUND, "User is not found *");
+            }
+            // check the user status
+            if (userByFaculty.status === "BLOCK") {
+                throw new Final_App_Error(httpStatus.FORBIDDEN, "Your account is blocked by the authority *")
+            }
+            if (userByFaculty.status === "EXPIRED") {
+                throw new Final_App_Error(httpStatus.FORBIDDEN, "Your account is expired by the authority *")
+            }
+            // if all ok then update the data 
+            const result = await Faculty_Model.findByIdAndUpdate({ _id: faculty._id }, {
+                name: {
+                    f_name: data.name?.f_name ? data.name.f_name : faculty.name.f_name,
+                    m_name: data.name?.m_name ? data.name.m_name : faculty.name.m_name,
+                    l_name: data.name?.l_name ? data.name.l_name : faculty.name.l_name,
+                },
+                facultyId: data.facultyId ? data.facultyId : faculty.facultyId,
+                department: data.department ? data.department : faculty.department
+            }, { new: true });
+            return result;
+        } else {
+            // you are an faculty or token is not valid 
+            throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Your token is not matched with the data *")
+        }
+    }
+}
 
 
 export const Faculty_Services = {
     Get_All_Faculty_Service,
-    Get_One_Faculty_Service
+    Get_One_Faculty_Service,
+    Udpate_Faculty_Service
 }

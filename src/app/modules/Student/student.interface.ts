@@ -18,3 +18,9 @@ export type Get_Student_Type = {
     studentId: string,
     department: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG' 
 }
+
+export type Update_Student_Type = {
+    name?: User_Name_Type,
+    studentId?: string,
+    department?: 'CSE' | 'SWE' | 'BBA' | 'MCT' | 'CIS' | 'ENG' 
+}

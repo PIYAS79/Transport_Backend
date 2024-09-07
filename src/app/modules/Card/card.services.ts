@@ -5,6 +5,7 @@ import Final_App_Error from "../../class/Final.app.error";
 import httpStatus from "http-status";
 import { Card_Model } from "./card.model";
 import { calculateExpireTime_For_One_Way } from "./card.utils";
+import Query_Builder from "../../class/Query.builder";
 
 
 
@@ -63,8 +64,39 @@ const Get_A_User_All_Cards = async(tokendata:JwtPayload,userId:string)=>{
     return result;
 }
 
+// get all card service 
+const Get_All_Cards_Service = async(tokenData: JwtPayload, userId: string, query: Record<string, unknown>)=>{
+    // find the user by userId
+    const user = await User_Model.findById({ _id: userId });
+    if (!user) {
+        throw new Final_App_Error(httpStatus.NOT_FOUND, "User is not found *");
+    }
+    // check the user email and token email is matched or not 
+    if (user.email !== tokenData.email) {
+        throw new Final_App_Error(httpStatus.UNAUTHORIZED, "Your token data is not valid with your profile *")
+    }
+    // check the role 
+    if (user.role === "ADMIN" || user.role === "SUPER") {
+        const partialTags = ['cardType','email','status','duraton','route','amount','payedWith','confirmedBy'];
+        const cardInstance = new Query_Builder(Card_Model.find().populate('confirmedBy').populate('semesterId').populate('user'), query)
+            .searchQuery(partialTags)
+            .fieldQuery()
+            .filterQuery()
+            .sortQuery()
+            .pageQuery()
+
+        const result = await cardInstance.modelQuery;
+        const meta = await cardInstance.countTotalMeta();
+        return { result, meta }
+    } else {
+
+        throw new Final_App_Error(httpStatus.UNAUTHORIZED, "You are not an admin *");
+    }
+}
+
 
 export const Card_Services = {
     Create_One_Way_Pass_Card_Service,
-    Get_A_User_All_Cards
+    Get_A_User_All_Cards,
+    Get_All_Cards_Service
 }

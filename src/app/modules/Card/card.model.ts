@@ -71,6 +71,7 @@ const Card_Schema = new Schema<Card_Type>({
             },
             message: "confirmedBy must be a valid ObjectId or 'AUTO'",
         },
+        ref:"User",
         required: [true, "ConfirmedBy field is required *"],
     },
     expiredAt: {
