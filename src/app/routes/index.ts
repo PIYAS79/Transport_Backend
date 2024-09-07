@@ -7,6 +7,8 @@ import { Semester_Router } from '../modules/Semester/semester.route';
 import { Semester_Card_Stack_Routes } from '../modules/Semester_Card_Stack/semesterCardStack.route';
 import { Card_Router } from '../modules/Card/card.route';
 import { Student_Routes } from '../modules/Student/student.route';
+import { Faculty_Routes } from '../modules/Faculty/faculty.route';
+import { Admin_Routes } from '../modules/Admin/admin.route';
 
 
 const router = express.Router();
@@ -35,6 +37,14 @@ const projectRoutes = [
     {
         path:'/student',
         route:Student_Routes
+    },
+    {
+        path:'/faculty',
+        route:Faculty_Routes
+    },
+    {
+        path:'/admin',
+        route:Admin_Routes
     }
 ]
 
