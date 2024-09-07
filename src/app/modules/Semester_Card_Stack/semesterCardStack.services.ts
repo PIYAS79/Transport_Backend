@@ -8,6 +8,7 @@ import { SemesterCardStack_Model } from "./semesterCardStack.model";
 import { Card_Type } from "../Card/card.interface";
 import { Card_Model } from "../Card/card.model";
 import { calculateExpireTime_For_A_Semester } from "./Semester_Card_Stack.utils";
+import Query_Builder from "../../class/Query.builder";
 
 
 
@@ -85,7 +86,7 @@ const Withdraw_Confirm_By_Admin_Service = async (tokenData: JwtPayload) => {
     const result = await SemesterCardStack_Model.findByIdAndDelete({ _id: requestedDoc._id }, { new: true });
     return result
 }
-
+// card request approve by admin service
 const Card_Request_Approved_By_Admin_Service = async (requestId: string, tokenData: JwtPayload) => {
 
     // find the user
@@ -145,13 +146,34 @@ const Card_Request_Approved_By_Admin_Service = async (requestId: string, tokenDa
 
     return result;
 }
+// get all card request service
+const Get_All_Card_Req_Service = async (query: Record<string, unknown>) => {
 
 
+    const partialTags = ['payment_amount', 'route', 'email', 'semester_id', 'payedWith', 'status'];
+    const semesterCradReqStack = new Query_Builder(SemesterCardStack_Model.find().populate("semester_id").populate("user"), query)
+        .searchQuery(partialTags)
+        .fieldQuery()
+        .filterQuery()
+        .sortQuery()
+        .pageQuery()
+
+    const result = await semesterCradReqStack.modelQuery;
+    const meta = await semesterCradReqStack.countTotalMeta();
+    return { result, meta }
+}
+// get one card request service
+const Get_One_Card_Req_Service = async (rid: string) => {
+    const result = await SemesterCardStack_Model.findById({_id:rid}).populate('semester_id').populate('user');
+    return result;
+}
 
 
 export const Semester_Card_Stack_Services = {
     Card_Request_Service,
     Request_Withdraw_By_User_Service,
     Withdraw_Confirm_By_Admin_Service,
-    Card_Request_Approved_By_Admin_Service
+    Card_Request_Approved_By_Admin_Service,
+    Get_All_Card_Req_Service,
+    Get_One_Card_Req_Service
 }

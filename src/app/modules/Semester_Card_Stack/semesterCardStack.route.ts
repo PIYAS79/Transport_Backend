@@ -16,5 +16,9 @@ router.patch('/withdraw',Token_Verify("ADMIN","STUDENT","SUPER","FACULTY"),Zod_V
 router.delete('/withdraw',Token_Verify("ADMIN","SUPER"),Semester_Card_Stack_Controller.Withdraw_Confirm_By_Admin_Controller)
 // admin = approve request 
 router.patch('/request/:rid',Token_Verify("ADMIN","SUPER"),Semester_Card_Stack_Controller.Card_Request_Approved_By_Admin_Controller)
+// get all semester card stack
+router.get('/',Token_Verify("ADMIN","STUDENT","SUPER","FACULTY"),Semester_Card_Stack_Controller.Get_All_Card_Req_Controller)
+// get all semester card stack
+router.get('/:rid',Token_Verify("ADMIN","STUDENT","SUPER","FACULTY"),Semester_Card_Stack_Controller.Get_One_Card_Req_Controller)
 
 export const Semester_Card_Stack_Routes = router;

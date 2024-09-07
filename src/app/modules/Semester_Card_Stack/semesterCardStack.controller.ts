@@ -49,7 +49,26 @@ const Card_Request_Approved_By_Admin_Controller = Async_Catch(async (req: Reques
         data: result
     })
 })
+// card request approve by admin controller 
+const Get_All_Card_Req_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
+    const result = await Semester_Card_Stack_Services.Get_All_Card_Req_Service(req.query);
 
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully get all card requsests !",
+        data: result
+    })
+})
+// card request approve by admin controller 
+const Get_One_Card_Req_Controller = Async_Catch(async (req: Request, res: Response, next: NextFunction) => {
+    const result = await Semester_Card_Stack_Services.Get_One_Card_Req_Service(req.params.rid);
+
+    res.status(httpStatus.OK).json({
+        success: true,
+        message: "Successfully get one card requsest !",
+        data: result
+    })
+})
 
 
 
@@ -58,5 +77,7 @@ export const Semester_Card_Stack_Controller = {
     Card_Request_Controller,
     Request_Withdraw_By_User_Controller,
     Withdraw_Confirm_By_Admin_Controller,
-    Card_Request_Approved_By_Admin_Controller
+    Card_Request_Approved_By_Admin_Controller,
+    Get_All_Card_Req_Controller,
+    Get_One_Card_Req_Controller
 }
