@@ -21,7 +21,8 @@ const Name_Schema: Schema = new Schema<User_Name_Type>({
 const Student_Schema = new Schema<Student_Type>({
     user: {
         type: Schema.Types.ObjectId,
-        required: [true, "user ref is required *"]
+        required: [true, "user ref is required *"],
+        ref:"User"
     },
     email: {
         type: String,

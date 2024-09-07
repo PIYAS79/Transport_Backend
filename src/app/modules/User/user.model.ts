@@ -6,10 +6,6 @@ import { encodeDatabyBcrypt } from "../../utils/bcrypt";
 
 
 const User_Schema = new Schema<User_Type, User_Custom_Static_Method>({
-    // user: {
-    //     type: Schema.Types.ObjectId,
-    //     required: [true, "user ref is required *"]
-    // },
     email: {
         type: String,
         unique: true,
